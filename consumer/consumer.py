@@ -6,7 +6,7 @@ import os
 
 
 broker = os.environ['MQTT_BROKER_HOST']
-port = os.environ['MQTT_BROKER_PORT']
+port = int(os.environ['MQTT_BROKER_PORT'])
 topic = "environmentals/basic"
 # Generate a Client ID with the subscribe prefix.
 client_id = f'subscribe-{random.randint(0, 100)}'
@@ -29,14 +29,14 @@ def connect_mqtt() -> mqtt_client:
 
 def connect_database():
     database = os.environ['DB_DATABASE']
-    user = os.environ['DB_USER']
-    password = os.environ['DB_PASSWORD']
-    host = os.environ['DB_HOST']
-    port = int(os.environ['DB_PORT'])
+    db_user = os.environ['DB_USER']
+    db_password = os.environ['DB_PASSWORD']
+    db_host = os.environ['DB_HOST']
+    db_port = int(os.environ['DB_PORT'])
 
-    print(f"port: {port} type: {type(port)}")
-    
-    return psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
+    print(f"port: {db_port} type: {type(db_port)}")
+
+    return psycopg2.connect(database=database, user=db_user, password=db_password, host=db_host, port=db_port)
 
 
 def subscribe(client: mqtt_client, connection):
