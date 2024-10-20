@@ -34,8 +34,6 @@ def connect_database():
     db_host = os.environ['DB_HOST']
     db_port = int(os.environ['DB_PORT'])
 
-    print(f"port: {db_port} type: {type(db_port)}")
-
     return psycopg2.connect(database=database, user=db_user, password=db_password, host=db_host, port=db_port)
 
 
