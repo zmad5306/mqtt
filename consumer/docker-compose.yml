@@ -5,7 +5,7 @@ services:
     container_name: mqtt-database
     restart: unless-stopped
     volumes:
-      - /media/Storage/mqtt/tsdb/data:/home/postgres/pgdata/data
+      - /media/Storage/mqtt/tsdb/data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=abc123
   mqtt-consumer:
