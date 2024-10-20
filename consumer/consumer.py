@@ -1,4 +1,6 @@
 import random
+import psycopg2
+import json
 
 from paho.mqtt import client as mqtt_client
 
@@ -25,18 +27,28 @@ def connect_mqtt() -> mqtt_client:
     client.connect(broker, port)
     return client
 
+def connect_database():
+    return psycopg2.connect(database="postgres", user='postgres', password='abc123', host="database", port=5432)
 
-def subscribe(client: mqtt_client):
+
+def subscribe(client: mqtt_client, connection):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        reading = json.loads(msg.payload.decode())
+        cur = connection.cursor()
+        parameters = (reading['sensor_id'], reading['timestamp'], reading['temperature'], reading['humidity'])
+        cur.execute("insert into readings (sensor_id, ts, temperature, humidity) values(%s, %s, %s, %s)", parameters)
+
+        connection.commit()
 
     client.subscribe(topic)
     client.on_message = on_message
 
 
 def run():
+    connection = connect_database()
     client = connect_mqtt()
-    subscribe(client)
+    subscribe(client, connection)
     client.loop_forever()
 
 

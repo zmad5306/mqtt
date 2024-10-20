@@ -6,3 +6,13 @@ services:
       dockerfile: Dockerfile
     container_name: mqtt5-consumer
     restart: unless-stopped
+    depends_on:
+      - database
+  database:
+    image: timescale/timescaledb:latest-pg16-oss
+    container_name: mqtt-consumer-tsdb
+    restart: unless-stopped
+    volumes:
+      - /media/Storage/mqtt/tsdb/data:/home/postgres/pgdata/data
+    environment:
+      - POSTGRES_PASSWORD=abc123
