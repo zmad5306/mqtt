@@ -28,7 +28,13 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 def connect_database():
-    return psycopg2.connect(database=os.environ['DB_DATABASE'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'], host=os.environ['DB_HOST'], port=int(os.environ['DB_PORT']))
+    database = os.environ['DB_DATABASE']
+    user = os.environ['DB_USER']
+    password = os.environ['DB_PASSWORD']
+    host = os.environ['DB_HOST']
+    port = int(os.environ['DB_PORT'])
+    
+    return psycopg2.connect(database=database, user=user, password=password, host=host, port=port)
 
 
 def subscribe(client: mqtt_client, connection):
