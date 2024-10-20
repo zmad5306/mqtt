@@ -4,7 +4,7 @@ import time
 from paho.mqtt import client as mqtt_client
 
 
-broker = 'localhost'
+broker = 'server-01.local'
 port = 1883
 topic = "environmentals/basic"
 # Generate a Client ID with the publish prefix.
@@ -17,7 +17,7 @@ def connect_mqtt():
         if rc == 0:
             print("Connected to MQTT Broker!")
         else:
-            print("Failed to connect, return code %d\n", rc)
+            print(f"Failed to connect, return code {rc}\n")
 
     client = mqtt_client.Client(client_id)
     client.username_pw_set(username, password)
