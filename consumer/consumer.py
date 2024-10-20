@@ -3,7 +3,7 @@ import random
 from paho.mqtt import client as mqtt_client
 
 
-broker = 'localhost'
+broker = 'server-01.local'
 port = 1883
 topic = "environmentals/basic"
 # Generate a Client ID with the subscribe prefix.
