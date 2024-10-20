@@ -1,4 +1,5 @@
 version: "3.7"
+name: mqtt-consumer
 services:
   mqtt-database:
     image: timescale/timescaledb:latest-pg16-oss
