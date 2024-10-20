@@ -1,0 +1,13 @@
+[Unit]
+Description=Temp Producer
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/Repos/mqtt/producer/producer.py
+Restart=always
+WorkingDirectory=/home/pi/Repos/mqtt/producer
+User=pi
+
+[Install]
+WantedBy=multi-user.target
