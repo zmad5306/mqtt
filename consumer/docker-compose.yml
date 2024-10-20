@@ -1,18 +1,28 @@
 version: "3.7"
 services:
-  mqtt5-consumer:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    container_name: mqtt5-consumer
-    restart: unless-stopped
-    depends_on:
-      - database
-  database:
+  mqtt-database:
     image: timescale/timescaledb:latest-pg16-oss
-    container_name: mqtt-consumer-tsdb
+    container_name: mqtt-database
     restart: unless-stopped
     volumes:
       - /media/Storage/mqtt/tsdb/data:/home/postgres/pgdata/data
     environment:
       - POSTGRES_PASSWORD=abc123
+  mqtt-consumer:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: mqtt-consumer
+    restart: unless-stopped
+    depends_on:
+      - mqtt-database
+    environment:
+      - MQTT_BROKER_HOST=${MQTT_BROKER_HOST}
+      - MQTT_BROKER_PORT=${MQTT_BROKER_PORT}
+      - MQTT_USER=${MQTT_USER}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}

@@ -7,4 +7,4 @@ create table readings (
 
 create unique index on readings (sensor_id, ts);
 
-SELECT create_hypertable('readings', by_range('ts', INTERVAL '1 week'));
+select create_hypertable('readings', by_range('ts', interval '1 week'));

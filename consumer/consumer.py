@@ -1,17 +1,17 @@
 import random
 import psycopg2
 import json
-
 from paho.mqtt import client as mqtt_client
+import os
 
 
-broker = 'server-01.local'
-port = 1883
+broker = os.environ['MQTT_BROKER_HOST']
+port = os.environ['MQTT_BROKER_PORT']
 topic = "environmentals/basic"
 # Generate a Client ID with the subscribe prefix.
 client_id = f'subscribe-{random.randint(0, 100)}'
-username = 'user1'
-password = '$Tester01'
+username = os.environ['MQTT_USER']
+password = os.environ['MQTT_PASSWORD']
 
 
 def connect_mqtt() -> mqtt_client:
@@ -28,7 +28,7 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 def connect_database():
-    return psycopg2.connect(database="postgres", user='postgres', password='abc123', host="database", port=5432)
+    return psycopg2.connect(database=os.environ['DB_DATABASE'], user=os.environ['DB_USER'], password=os.environ['DB_PASSWORD'], host=os.environ['DB_HOST'], port=os.environ['DB_PORT'])
 
 
 def subscribe(client: mqtt_client, connection):
