@@ -37,7 +37,7 @@ def publish(client):
     timestamp = datetime.datetime.now().replace(second=0).replace(microsecond=0).replace(microsecond=0)
     if humidity is not None and temperature is not None:
         msg = {'sensor_id': 1, 'timestamp': timestamp, 'temperature': temperature, 'humidity': humidity}
-        json_msg = json.dumps(msg)
+        json_msg = json.dumps(msg, default=str)
         print(f"the json is: {json_msg}")
         result = client.publish(topic, json_msg)
         status = result[0]
