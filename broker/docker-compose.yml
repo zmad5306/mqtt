@@ -1,5 +1,4 @@
 version: "3.7"
-name: mqtt_broker
 services:
   mqtt5:
     image: eclipse-mosquitto
