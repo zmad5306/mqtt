@@ -1,7 +1,7 @@
 import random
-import time
 import Adafruit_DHT
 import json
+import datetime
 
 from paho.mqtt import client as mqtt_client
 
@@ -31,15 +31,18 @@ def connect_mqtt():
 
 
 def publish(client):
-    while True:
-        humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
-        if humidity is not None and temperature is not None:
-            msg = {'sensor_id': 1, 'temperature': temperature, 'humidity': humidity}
-            result = client.publish(topic, json.dumps(msg))
-            status = result[0]
-            if status != 0:
-                print(f"Failed to send message to topic {topic}")
-        time.sleep(3)
+    humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
+    humidity = 30
+    temperature = 70
+    timestamp = datetime.datetime.now().replace(second=0).replace(microsecond=0).replace(microsecond=0)
+    if humidity is not None and temperature is not None:
+        msg = {'sensor_id': 1, 'timestamp': timestamp, 'temperature': temperature, 'humidity': humidity}
+        json_msg = json.dumps(msg)
+        print(f"the json is: {json_msg}")
+        result = client.publish(topic, json_msg)
+        status = result[0]
+        if status != 0:
+            print(f"Failed to send message to topic {topic}")
 
 
 def run():
