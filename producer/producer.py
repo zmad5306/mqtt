@@ -1,20 +1,24 @@
 import random
-import Adafruit_DHT
+# import Adafruit_DHT
 import json
 import datetime
+from dotenv import load_dotenv
+import os
 
 from paho.mqtt import client as mqtt_client
 
-DHT_SENSOR = Adafruit_DHT.DHT22
+load_dotenv()
+
+# DHT_SENSOR = Adafruit_DHT.DHT22
 DHT_PIN = 4
 
-broker = 'server-01.local'
-port = 1883
+broker = os.getenv('BROKER_HOST')
+port = int(os.getenv('BROKER_PORT'))
+username = os.getenv('BROKER_USERNAME')
+password = os.getenv('BROKER_PASSWORD')
 topic = "environmentals/basic"
 # Generate a Client ID with the publish prefix.
 client_id = f'publish-{random.randint(0, 1000)}'
-username = 'user1'
-password = '$Tester01'
 
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
@@ -31,7 +35,7 @@ def connect_mqtt():
 
 
 def publish(client):
-    humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
+    # humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
     humidity = 30
     temperature = 70
     timestamp = datetime.datetime.now().replace(second=0).replace(microsecond=0).replace(microsecond=0)
