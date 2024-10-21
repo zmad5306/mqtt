@@ -21,12 +21,13 @@ services:
       - POSTGRES_PASSWORD=abc123
   mqtt-consumer:
     build:
-      context: ./consumer/
+      context: ./consumer
       dockerfile: Dockerfile
     container_name: mqtt-consumer
     restart: unless-stopped
     depends_on:
       - mqtt-database
+      - mqtt-broker
     environment:
       - MQTT_BROKER_HOST=${MQTT_BROKER_HOST}
       - MQTT_BROKER_PORT=${MQTT_BROKER_PORT}
