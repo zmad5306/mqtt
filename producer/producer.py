@@ -1,5 +1,5 @@
 import random
-# import Adafruit_DHT
+import Adafruit_DHT
 import json
 import datetime
 from dotenv import load_dotenv
@@ -9,7 +9,7 @@ from paho.mqtt import client as mqtt_client
 
 load_dotenv()
 
-# DHT_SENSOR = Adafruit_DHT.DHT22
+DHT_SENSOR = Adafruit_DHT.DHT22
 DHT_PIN = 4
 
 broker = os.getenv('BROKER_HOST')
@@ -35,14 +35,11 @@ def connect_mqtt():
 
 
 def publish(client):
-    # humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
-    humidity = 30
-    temperature = 70
+    humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
     timestamp = datetime.datetime.now().replace(second=0).replace(microsecond=0).replace(microsecond=0)
     if humidity is not None and temperature is not None:
         msg = {'sensor_id': 1, 'timestamp': timestamp, 'temperature': temperature, 'humidity': humidity}
         json_msg = json.dumps(msg, default=str)
-        print(f"the json is: {json_msg}")
         result = client.publish(topic, json_msg)
         status = result[0]
         if status != 0:
