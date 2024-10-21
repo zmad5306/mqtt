@@ -1,5 +1,16 @@
 version: "3.7"
 services:
+  mqtt-broker:
+    image: eclipse-mosquitto
+    container_name: mqtt-broker
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - /media/Storage/mqtt/config:/mosquitto/config:rw
+      - /media/Storage/mqtt/data:/mosquitto/data:rw
+      - /media/Stroage/mqtt/logs:/mosquitto/log:rw
+    restart: unless-stopped
   mqtt-database:
     image: timescale/timescaledb:latest-pg16-oss
     container_name: mqtt-database
@@ -10,7 +21,7 @@ services:
       - POSTGRES_PASSWORD=abc123
   mqtt-consumer:
     build:
-      context: ./
+      context: ./consumer/
       dockerfile: Dockerfile
     container_name: mqtt-consumer
     restart: unless-stopped
