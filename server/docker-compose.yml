@@ -12,7 +12,7 @@ services:
       - /media/Stroage/mqtt/logs:/mosquitto/log:rw
     restart: unless-stopped
   mqtt-database:
-    image: timescale/timescaledb:latest-pg16-oss
+    image: timescale/timescaledb:latest-pg16
     container_name: mqtt-database
     restart: unless-stopped
     volumes:

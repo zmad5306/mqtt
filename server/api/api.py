@@ -18,7 +18,7 @@ def readings(sensor_id):
     with psycopg2.connect(database=database, user=db_user, password=db_password, host=db_host, port=db_port) as connection:
         with connection.cursor() as cursor:
             parameters = (sensor_id)
-            cursor.execute("select ts, temperature, humidity from readings where sensor_id = %s order by ts", parameters)
+            cursor.execute("select time_bucket_gapfill('15 minute', ts) as ts, avg(temperature) as temperature, avg(humidity) as humidity from readings where sensor_id = %s and ts between now() - interval '30 days' and now() group by 1 order by 1", parameters)
             rows = cursor.fetchall()
             colnames = [desc[0] for desc in cursor.description]
             for row in rows:
