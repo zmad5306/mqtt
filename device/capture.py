@@ -4,6 +4,7 @@ import json
 import datetime
 from dotenv import load_dotenv
 import os
+import time
 
 from paho.mqtt import client as mqtt_client
 
@@ -35,8 +36,18 @@ def connect_mqtt():
 
 
 def publish(client):
-    humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
     timestamp = datetime.datetime.now().replace(second=0).replace(microsecond=0).replace(microsecond=0)
+    
+    
+    humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
+
+    tries = 0
+
+    while tries < 3 and (humidity is None or temperature is None):
+        humidity, temperature = Adafruit_DHT.read(DHT_SENSOR, DHT_PIN)
+        tries = tries + 1
+        time.sleep(3)
+
     if humidity is not None and temperature is not None:
         msg = {'sensor_id': 1, 'timestamp': timestamp, 'temperature': temperature, 'humidity': humidity}
         json_msg = json.dumps(msg, default=str)
